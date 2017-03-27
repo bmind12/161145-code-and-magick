@@ -21,7 +21,6 @@ function printCongrats(ctx) {
     ctx.font = '16px PT Mono';
     ctx.fillStyle = '#000000';
     ctx.fillText('Ура, вы победили!', 140, 40);
-    ctx.fillText('Список результатов:', 140, 60);
 }
 
 function drawBarChart(ctx, names, times) {
@@ -32,6 +31,10 @@ function drawBarChart(ctx, names, times) {
     var maxTime = findMaxTime(times);
     var step = barHeightMax / maxTime;
 
+    //Add chart's title
+    ctx.fillText('Список результатов:', 140, 60);
+
+    //Add chart's bars
     for(var i = 0; i < times.length; i++) {
 
         //Draw a bar
