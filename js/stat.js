@@ -36,7 +36,7 @@ function drawBarChart(ctx, names, times) {
   var left = 140;
   var barTop = 245;
   var timeTop = 240;
-  var labelNameTop = 265;
+  var nameTop = 265;
   var barHeightMax = 150;
   var barHeight = 150;
   var barWirdth = 40;
@@ -58,7 +58,7 @@ function drawBarChart(ctx, names, times) {
     // Add bar labels
     ctx.fillStyle = '#000000';
     ctx.fillText(times[i].toFixed(0), left + (barWirdth + indent) * i, timeTop - barHeight);
-    ctx.fillText(names[i], left + (barWirdth + indent) * i, labelNameTop);
+    ctx.fillText(names[i], left + (barWirdth + indent) * i, nameTop);
   }
 }
 
