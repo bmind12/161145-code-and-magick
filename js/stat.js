@@ -44,55 +44,47 @@ function printCongrats(ctx) {
 }
 
 function drawBarChart(ctx, names, times) {
-  var x = 140;
-  var y = 70;
+  var chartLeftMargin = 140;
+  var chartTopMargin = 105;
   var barWidth = 40;
   var barHeight = 150;
-  var barHeightMax = 150;
   var maxTime = findMaxTime(times);
-  var barHeightStep = barHeightMax / maxTime;
-  var yIndent = 10;
-  var xIndent = 50;
+  var step = barHeight / maxTime;
+  var indent = 50;
 
-  addChartTitle(ctx, x, y);
+  addChartTitle(ctx, chartLeftMargin, chartTopMargin);
 
   for (var i = 0; i < times.length; i++) {
 
-    x = 140;
-    y = 90;
+    var barColor = pickBarColor(ctx, names[i]);
+    var currentBarHeight = (step * times[i]);
+    var x = (barWidth + indent) * i;
+    var y = barHeight - currentBarHeight;
 
-    x = addPadding(x, (barWidth + xIndent) * i);
-    barHeight = barHeightStep * times[i];
-
-    y = addPadding(y, yIndent + barHeightMax - barHeight);
-    addBarLabel(ctx, times[i].toFixed(), x, y);
-
-    y = addPadding(y, yIndent);
-    pickBarColor(ctx, names[i]);
-    drawBar(ctx, x, y, barWidth, barHeight);
-
-    y = addPadding(y, barHeight + yIndent * 2);
-    addBarLabel(ctx, names[i], x, y);
+    drawBar(ctx, x, y, chartLeftMargin, chartTopMargin, barWidth, currentBarHeight, barColor);
+    addBarLabels(ctx, x, y, chartLeftMargin, chartTopMargin, currentBarHeight, names[i], times[i].toFixed());
   }
 }
 
-function addChartTitle(ctx, x, y) {
+function addChartTitle(ctx, leftMargin, topMargin) {
   var title = 'Список результатов:';
-  ctx.fillText(title, x, y);
+  var topPadding = -40;
+
+  ctx.fillText(title, leftMargin, topMargin + topPadding);
 }
 
-function drawBar(ctx, x, y, width, height) {
-  ctx.fillRect(x, y, width, height);
+function drawBar(ctx, x, y, leftMargin, topMargin, width, height, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x + leftMargin, y + topMargin, width, height);
 }
 
-function addBarLabel(ctx, text, x, y) {
+function addBarLabels(ctx, x, y, leftMargin, topMargin, gap, name, time) {
+  var timeLabelPadding = -7;
+  var nameLabelPadding = 20;
+
   ctx.fillStyle = '#000000';
-  ctx.fillText(text, x, y);
-}
-
-function addPadding(x, padding) {
-  x += padding;
-  return x;
+  ctx.fillText(time, x + leftMargin, y + timeLabelPadding + topMargin);
+  ctx.fillText(name, x + leftMargin, y + gap + nameLabelPadding + topMargin);
 }
 
 function findMaxTime(times) {
@@ -109,11 +101,14 @@ function findMaxTime(times) {
 
 function pickBarColor(ctx, name) {
   var randOpacity = 1;
+  var color;
 
   if (name === 'Вы') {
-    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    color = 'rgba(255, 0, 0, 1)';
   } else {
     randOpacity = Math.ceil(Math.random() * 10) / 10;
-    ctx.fillStyle = 'rgba(0, 0, 255, ' + randOpacity + ')';
+    color = 'rgba(0, 0, 255, ' + randOpacity + ')';
   }
+
+  return color;
 }
